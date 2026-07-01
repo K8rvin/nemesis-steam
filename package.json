@@ -1,0 +1,27 @@
+{
+  "name": "nemesis-steam",
+  "version": "0.1.0",
+  "description": "Nemesis RPG desktop client for Steam",
+  "main": "dist-electron/main.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/build.js --dev",
+    "build": "node scripts/build.js",
+    "dist": "node scripts/build.js --dist"
+  },
+  "keywords": [
+    "nemesis",
+    "rpg",
+    "steam",
+    "electron"
+  ],
+  "author": "Mohov Andrey",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^25.0.0",
+    "fs-extra": "^11.2.0",
+    "typescript": "^5.5.0"
+  }
+}

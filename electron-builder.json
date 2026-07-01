@@ -1,0 +1,49 @@
+{
+  "appId": "com.mohovand.nemesis-rpg",
+  "productName": "Nemesis",
+  "copyright": "Copyright © 2026 Mohov Andrey",
+  "directories": {
+    "output": "dist",
+    "buildResources": "electron"
+  },
+  "files": [
+    "dist-electron/**/*",
+    "app/**/*"
+  ],
+  "extraResources": [],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "electron/icon.png",
+    "artifactName": "Nemesis-${version}-${arch}.${ext}"
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "electron/icon.png",
+    "category": "Game",
+    "artifactName": "Nemesis-${version}-${arch}.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Nemesis"
+  },
+  "portable": {
+    "artifactName": "Nemesis-${version}-portable.${ext}"
+  }
+}
