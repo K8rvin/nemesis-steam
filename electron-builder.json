@@ -10,7 +10,13 @@
     "dist-electron/**/*",
     "app/**/*"
   ],
-  "extraResources": [],
+  "extraResources": [
+    {
+      "from": ".",
+      "to": ".",
+      "filter": ["steam_api64.dll", "steam_appid.txt"]
+    }
+  ],
   "win": {
     "target": [
       {

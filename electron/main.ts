@@ -1,6 +1,14 @@
-import { app, BrowserWindow, shell, Menu, protocol } from 'electron';
+import { app, BrowserWindow, shell, Menu, protocol, ipcMain } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import {
+  initSteam,
+  getSteamStatus,
+  activateSteamAchievement,
+  isSteamAchievementActivated,
+  openSteamOverlay,
+  openSteamOverlayToStore,
+} from './steam.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -74,12 +82,35 @@ function createWindow(): void {
   });
 }
 
+function setupIpc(): void {
+  ipcMain.handle('steam:get-status', () => getSteamStatus());
+  ipcMain.handle('steam:activate-achievement', (_event, name: string) =>
+    activateSteamAchievement(name)
+  );
+  ipcMain.handle('steam:is-achievement-activated', (_event, name: string) =>
+    isSteamAchievementActivated(name)
+  );
+  ipcMain.handle('steam:open-overlay', (_event, url: string) =>
+    openSteamOverlay(url)
+  );
+  ipcMain.handle('steam:open-overlay-store', (_event, appId: number) =>
+    openSteamOverlayToStore(appId)
+  );
+}
+
 app.whenReady().then(() => {
   protocol.registerFileProtocol(APP_SCHEME, (request, callback) => {
     callback({ path: getAssetPath(request.url) });
   });
 
   Menu.setApplicationMenu(null);
+  setupIpc();
+
+  // Инициализируем Steamworks. Без appid используется тестовый 480.
+  // Если Steam не запущен или DLL отсутствует — приложение продолжит работу.
+  const appId = process.env.STEAM_APP_ID ? parseInt(process.env.STEAM_APP_ID, 10) : 480;
+  initSteam(appId);
+
   createWindow();
 
   app.on('activate', () => {
