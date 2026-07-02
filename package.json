@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "node scripts/build.js --dev",
     "build": "node scripts/build.js",
-    "dist": "node scripts/build.js --dist"
+    "dist": "node scripts/build.js --dist",
+    "itch:push": "node scripts/itch-push.js"
   },
   "keywords": [
     "nemesis",
@@ -25,6 +26,7 @@
     "typescript": "^5.5.0"
   },
   "dependencies": {
+    "adm-zip": "^0.5.18",
     "steamworks.js": "^0.4.0"
   }
 }

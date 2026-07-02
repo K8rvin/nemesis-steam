@@ -93,3 +93,30 @@ window.electronAPI?.steam?.openOverlay('https://example.com')
 - Игра остаётся онлайн: используется тот же бэкенд `nemesis-backend` и Supabase.
 - Для Steam рекомендуется подписывать исполняемые файлы (code signing).
 - Первый запуск скачанного `.exe` может предупреждать Windows SmartScreen из-за отсутствия подписи.
+
+## Публикация на itch.io
+
+Проект настроен для бесплатной публикации на [itch.io](https://itch.io/) без взносов.
+
+### Быстрый старт
+
+1. Создай проект на https://itch.io/game/new (название `Nemesis`, URL `nemesis`).
+2. Скопируй описание из `itch-io/page-description.html` в поле **Description**.
+3. Получи API-ключ: https://itch.io/user/settings/api-keys
+4. Запусти загрузку билдов:
+
+```bash
+set ITCH_USER=your_itch_username
+set ITCH_GAME=nemesis
+set BUTLER_API_KEY=your_api_key
+npm run itch:push
+```
+
+Скрипт `itch-push.js` автоматически скачает Butler, соберёт веб-версию, упакует её в zip и загрузит 4 канала:
+
+- `win` — установщик `Nemesis-0.1.0-x64.exe`
+- `win-portable` — portable `Nemesis-0.1.0-portable.exe`
+- `linux` — `Nemesis-0.1.0-x64.AppImage`
+- `web` — HTML5-версия для браузера
+
+Подробная инструкция — в `itch-io/instructions.md`.
