@@ -67,7 +67,7 @@ async function ensureButler() {
   console.log('📥 Downloading Butler...');
   await fs.ensureDir(butlerCache);
   const zipPath = path.join(butlerCache, 'butler.zip');
-  const url = `https://broth.itch.ovh/butler/${platform}/LATEST/archive/default`;
+  const url = `https://broth.itch.zone/butler/${platform}/LATEST/archive/default`;
   await downloadFile(url, zipPath);
 
   const zip = new AdmZip(zipPath);
@@ -95,17 +95,24 @@ function runButler(butler, args) {
   }
 }
 
+function runNpm(args, cwd) {
+  const isWin = process.platform === 'win32';
+  const cmd = isWin ? 'npm.cmd' : 'npm';
+  return spawnSync(cmd, args, { cwd, stdio: 'inherit', shell: isWin }).status;
+}
+
 async function ensureBuilds() {
+  // Windows-билды собираем всегда. Linux AppImage можно собрать только на Linux,
+  // поэтому пропускаем, если его нет. MacOS тоже пропускаем.
   const required = [
     path.join(distDir, 'Nemesis-0.1.0-x64.exe'),
     path.join(distDir, 'Nemesis-0.1.0-portable.exe'),
-    path.join(distDir, 'Nemesis-0.1.0-x64.AppImage'),
   ];
   const missing = required.filter((f) => !fs.existsSync(f));
   if (missing.length > 0) {
     console.log('🔧 Desktop builds not found, running npm run dist...');
-    const result = spawnSync('npm', ['run', 'dist'], { cwd: root, stdio: 'inherit' });
-    if (result.status !== 0) {
+    const status = runNpm(['run', 'dist'], root);
+    if (status !== 0) {
       throw new Error('Build failed');
     }
   }
@@ -114,8 +121,8 @@ async function ensureBuilds() {
   const webDist = path.resolve(root, '..', 'nemesis-web', 'dist');
   if (!fs.existsSync(webDist)) {
     console.log('🔧 Web build not found, running npm run build in nemesis-web...');
-    const result = spawnSync('npm', ['run', 'build'], { cwd: path.resolve(root, '..', 'nemesis-web'), stdio: 'inherit' });
-    if (result.status !== 0) {
+    const status = runNpm(['run', 'build'], path.resolve(root, '..', 'nemesis-web'));
+    if (status !== 0) {
       throw new Error('Web build failed');
     }
   }
