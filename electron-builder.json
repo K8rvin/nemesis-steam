@@ -10,22 +10,19 @@
     "dist-electron/**/*",
     "app/**/*"
   ],
-  "extraResources": [
-    {
-      "from": ".",
-      "to": ".",
-      "filter": ["steam_api64.dll", "steam_appid.txt"]
-    }
-  ],
   "win": {
     "target": [
       {
         "target": "nsis",
-        "arch": ["x64"]
+        "arch": [
+          "x64"
+        ]
       },
       {
         "target": "portable",
-        "arch": ["x64"]
+        "arch": [
+          "x64"
+        ]
       }
     ],
     "icon": "electron/icon.png",
@@ -35,7 +32,9 @@
     "target": [
       {
         "target": "AppImage",
-        "arch": ["x64"]
+        "arch": [
+          "x64"
+        ]
       }
     ],
     "icon": "electron/icon.png",
